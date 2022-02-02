@@ -13,12 +13,15 @@ class Experiment(object):
         date,
         immediate: bool = True,
         manual_output=False,
+        theme="seti",
     ) -> None:
         self.py_file = path_to_py_file
         self.output_file = self.py_file.replace(".py", ".txt")
         self.title = title
         self.date = date
         self.manual_output = manual_output
+        self.options = {}
+        self.options["theme"] = theme
         if immediate:
             self.run()
             self.get_images()
@@ -46,6 +49,7 @@ class Experiment(object):
                         "paddingHorizontal": "0px",
                         "paddingVertical": "0px",
                         "windowControls": False,
+                        "theme": self.options["theme"],
                         "language": "python",
                     },
                 ).content
@@ -55,11 +59,12 @@ class Experiment(object):
                 requests.post(
                     "https://carbonara-42.herokuapp.com/api/cook",
                     json={
-                        "code": open(self.output_file, "r").read(),
+                        "code": open(self.output_file, "r").read() or " ",
                         "lineNumbers": True,
                         "paddingHorizontal": "0px",
                         "paddingVertical": "0px",
                         "windowControls": False,
+                        "theme": self.options["theme"],
                         "language": "plain text",
                     },
                 ).content
