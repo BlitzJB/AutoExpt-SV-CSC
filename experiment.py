@@ -21,7 +21,7 @@ class Experiment(object):
         self.date = date
         self.manual_output = manual_output
         self.options = {}
-        self.options["theme"] = theme
+        self.options["theme"] = theme or "seti"
         if immediate:
             self.run()
             self.get_images()
@@ -39,6 +39,7 @@ class Experiment(object):
 
     def get_images(self) -> None:
         self.run()
+        print(self.options['theme'])
         with open(self.py_file.replace(".py", "") + "_script.jpg", "wb") as f:
             f.write(
                 requests.post(
