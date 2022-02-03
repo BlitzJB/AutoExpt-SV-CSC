@@ -17,7 +17,7 @@ def main(
         title = title or typer.prompt("Title")
         date = date or typer.prompt("Date")
         manual_output = manual_output or False
-        Experiment(str(file), title, date, True, manual_output, theme)
+        Experiment(str(file), title, date, immediate = True, manual_output = manual_output, theme = theme)
     else:
         typer.secho("The file does not exist", fg="red")
 
