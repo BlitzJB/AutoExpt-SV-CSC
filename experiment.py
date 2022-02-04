@@ -26,19 +26,19 @@ class Experiment(object):
             self.run()
             self.get_images()
             self.create_docx()
-            self._cleanup()
+            # self._cleanup()
 
     def run(self) -> None:
+        command = ["python3" if sys.platform == "linux" else "python", self.py_file]
         if not self.manual_output:
             subprocess.call(
-                ["python3" if sys.platform == "linux" else "python", self.py_file],
+                command,
                 stdout=open(self.output_file, "w"),
             )
         else:
-            open(self.output_file, "w").write(open(self.manual_output, "r").read())
+            subprocess.call(command, stdout = open(self.output_file, "w"), shell=True)
 
     def get_images(self) -> None:
-        self.run()
         print(self.options['theme'])
         with open(self.py_file.replace(".py", "") + "_script.jpg", "wb") as f:
             f.write(
