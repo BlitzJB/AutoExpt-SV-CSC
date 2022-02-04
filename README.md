@@ -6,6 +6,10 @@ Experiment('path_to_file.py', 'Amazing title', 'Incredible Datestring')
 
 # if file needs use input, you will have to make a text file and put your console output in it
 Experiment('path_to_file.py', 'Amazing title', 'Incredible Datestring', manual_output='path_to_the_text_file_you_made.txt')
+
+# Or you could enter realtime input by just specifying manual input to True
+Experiment('path_to_file.py', 'Amazing title', 'Incredible Datestring', manual_output=True)
+# You will then have to enter the input in the same order at which you will enter in the program. NOTE: The input prompts will Not be printed.
 ```
 
 ### CLI Usage
