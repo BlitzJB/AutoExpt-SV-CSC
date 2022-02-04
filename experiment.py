@@ -1,6 +1,9 @@
+from base64 import encode
 import sys
+from click import echo
 from docx import Document, shared
 import subprocess
+import subprocess_tee
 import requests
 import os
 
@@ -29,17 +32,22 @@ class Experiment(object):
             self._cleanup()
 
     def run(self) -> None:
+        command = ["python3" if sys.platform == "linux" else "python", self.py_file]
         if not self.manual_output:
             subprocess.call(
-                ["python3" if sys.platform == "linux" else "python", self.py_file],
+                command,
                 stdout=open(self.output_file, "w"),
             )
         else:
-            open(self.output_file, "w").write(open(self.manual_output, "r").read())
+            from asyncsubp import execute
+            def cb(out: bytes):
+                out = out.decode("utf-8")
+                print(out)
+                open(self.output_file, "w").write(out)
+            execute(command, cb, lambda x: echo(x))
 
     def get_images(self) -> None:
         self.run()
-        print(self.options['theme'])
         with open(self.py_file.replace(".py", "") + "_script.jpg", "wb") as f:
             f.write(
                 requests.post(
