@@ -11,8 +11,8 @@ def run(
     file: Path = typer.Argument(
         ..., help="Path to the file to be processed", file_okay=True, exists=True
     ),
-    title: Optional[str] = typer.Option(None),
-    date: Optional[str] = typer.Option(None),
+    title: Optional[str] = typer.Option(..., prompt=True),
+    date: Optional[str] = typer.Option(..., prompt=True),
     manual_output: Optional[str] = typer.Option(None),
     theme: Optional[str] = typer.Option(None),
 ):
@@ -25,7 +25,9 @@ def run(
         typer.secho("The file does not exist", fg="red")
 
 @app.command()
-def mysql(name: Path = typer.Argument(..., help="Path to the file to be processed", file_okay=True, exists=True)):
-    run_mysql(name)
+def mysql(name: Path = typer.Argument(..., help="Path to the file to be processed", file_okay=True, exists=True),
+        yes_to_all: Optional[bool] = typer.Option(False, "--y", is_flag=True, help="Skip all prompts")
+    ):
+    run_mysql(name, yes_to_all)
 if __name__ == "__main__":
     app()
